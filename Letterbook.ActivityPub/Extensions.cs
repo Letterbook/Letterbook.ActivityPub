@@ -4,14 +4,22 @@ namespace Letterbook.ActivityPub;
 
 public static class Extensions
 {
-    public static Models.Object Resolve(this IResolvable self)
+    public static Models.Object? Resolve(this IResolvable self)
     {
-        throw new NotImplementedException();
+        if (self is Models.Object o) return o;
+        // TODO: else it's a Link, so fetch it
+        return default;
     }
 
-    public static bool TryResolve<T>(this IResolvable self, out T value) where T : Models.Object
+    public static bool TryResolve<T>(this IResolvable self, out T? value) where T : Models.Object
     {
-        throw new NotImplementedException();
+        if (self.Resolve() is T o)
+        {
+            value = o;
+            return true;
+        }
+        value = default;
+        return false;
     }
     
     public static Models.Object Verify(this IResolvable self)

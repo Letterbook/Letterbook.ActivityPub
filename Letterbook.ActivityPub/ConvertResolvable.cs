@@ -7,6 +7,11 @@ namespace Letterbook.ActivityPub;
 
 public class ConvertResolvable : JsonConverter<IResolvable>
 {
+    public override bool CanConvert(Type typeToConvert)
+    {
+        return typeof(IResolvable).IsAssignableFrom(typeToConvert);
+    }
+    
     public override IResolvable? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
@@ -16,11 +21,15 @@ public class ConvertResolvable : JsonConverter<IResolvable>
         }
 
         var forwardReader = reader;
+        Stack<string> path = new Stack<string>();
+        path.Push("$");
         while (forwardReader.Read())
         {
             if (forwardReader.TokenType is JsonTokenType.PropertyName)
             {
-                if (forwardReader.GetString() == "type")
+                var nextPropertyName = forwardReader.GetString();
+                path.Push(nextPropertyName);
+                if (nextPropertyName == "type")
                 {
                     forwardReader.Read();
                     var next = forwardReader.GetString();
@@ -28,14 +37,35 @@ public class ConvertResolvable : JsonConverter<IResolvable>
                     {
                         return JsonSerializer.Deserialize<Link>(reader: ref reader, options);
                     }
-                    return JsonSerializer.Deserialize<BaseObject>(reader: ref reader, options);
+                    if (string.Compare(next, "Actor", StringComparison.InvariantCultureIgnoreCase) == 0)
+                    {
+                        return JsonSerializer.Deserialize<Actor>(ref reader, options);
+                    }
+                    if (string.Compare(next, "Collection", StringComparison.InvariantCultureIgnoreCase) == 0 ||
+                        string.Compare(next, "OrderedCollection", StringComparison.InvariantCultureIgnoreCase) == 0)
+                    {
+                        return JsonSerializer.Deserialize<Collection>(ref reader, options);
+                    }
+                    if (string.Compare(next, "CollectionPage", StringComparison.InvariantCultureIgnoreCase) == 0 ||
+                        string.Compare(next, "OrderedCollectionPage", StringComparison.InvariantCultureIgnoreCase) == 0)
+                    {
+                        return JsonSerializer.Deserialize<CollectionPage>(ref reader, options);
+                    }
+                    if (Activity.Types.Contains(next, StringComparer.InvariantCultureIgnoreCase))
+                    {
+                        return JsonSerializer.Deserialize<Activity>(ref reader, options);
+                    }
+                    
+                    return JsonSerializer.Deserialize<Models.Object>(ref reader, options);
                 }
 
-                if (forwardReader.GetString() == "href")
-                    return JsonSerializer.Deserialize<Link>(reader: ref reader, options);
+                path.Pop();
 
-                if (forwardReader.GetString() == "id")
-                    return JsonSerializer.Deserialize<BaseObject>(reader: ref reader, options);
+                // if (nextPropertyName == "href")
+                // return JsonSerializer.Deserialize<Link>(reader: ref reader, options);
+
+                // if (nextPropertyName == "id")
+                // return JsonSerializer.Deserialize<Models.Object>(reader: ref reader, options);
             }
 
             if (forwardReader.TokenType is JsonTokenType.StartObject or JsonTokenType.StartArray)

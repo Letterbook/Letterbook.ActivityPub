@@ -3,8 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Letterbook.ActivityPub.Models;
 
-[JsonConverter(typeof(ConvertResolvable))]
-public class Actor : BaseObject
+public class Actor : Object
 {
     public Collection Inbox { get; set; }
     public Collection Outbox { get; set; }

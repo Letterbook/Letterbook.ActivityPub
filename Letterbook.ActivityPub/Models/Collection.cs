@@ -1,4 +1,6 @@
-﻿namespace Letterbook.ActivityPub.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace Letterbook.ActivityPub.Models;
 
 public class Collection : Object
 {
@@ -6,5 +8,7 @@ public class Collection : Object
     public CollectionPage? Current { get; set; }
     public CollectionPage? First { get; set; }
     public CollectionPage? Last { get; set; }
-    public CollectionPage? Items { get; set; }
+
+    [JsonConverter(typeof(ConvertList<IResolvable>))]
+    public IList<IResolvable>? Items { get; set; }
 }

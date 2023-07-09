@@ -2,26 +2,22 @@
 
 namespace Letterbook.ActivityPub.Models;
 
-public class ContentMap : Dictionary<CultureInfo, string>
+public class ContentMap : Dictionary<string, string>
 {
-    public ICollection<CultureInfo> Languages => Keys;
+    public ICollection<string> Languages => Keys;
 
-    private readonly CultureInfo _defaultCulture;
+    private readonly string _defaultCulture;
 
-    public ContentMap(CultureInfo cultureInfo)
+    public ContentMap(string cultureInfo)
     {
         _defaultCulture = cultureInfo;
     }
     
-    public ContentMap() : this(CultureInfo.InvariantCulture)
+    public ContentMap() : this(CultureInfo.InvariantCulture.Name)
     {}
 
     public override string ToString()
     {
         return TryGetValue(_defaultCulture, out var value) ? value : this.FirstOrDefault().Value;
     }
-
-    public void Add(string key, string value) => Add(CultureInfo.GetCultureInfoByIetfLanguageTag(key), value);
-
-    public void Add(KeyValuePair<string, string> kvp) => Add(kvp.Key, kvp.Value);
 }

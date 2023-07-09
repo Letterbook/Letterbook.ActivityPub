@@ -5,7 +5,6 @@ using System.Text.Json.Serialization;
 
 namespace Letterbook.ActivityPub.Models;
 
-[JsonConverter(typeof(ConvertResolvable))]
 public class Link : IResolvable
 {
     [Required] public Uri Href { get; set; }

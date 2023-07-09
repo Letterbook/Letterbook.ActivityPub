@@ -1,0 +1,7 @@
+﻿{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "actor": "https://example.com/users/phoenix",
+  "id": "https://example.com/users/phoenix#likes/557",
+  "object": "https://letterbook.example/activitypub/helge/id567",
+  "type": "Like"
+}

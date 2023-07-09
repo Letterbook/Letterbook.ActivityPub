@@ -21,14 +21,11 @@ public class ConvertResolvable : JsonConverter<IResolvable>
         }
 
         var forwardReader = reader;
-        Stack<string> path = new Stack<string>();
-        path.Push("$");
         while (forwardReader.Read())
         {
             if (forwardReader.TokenType is JsonTokenType.PropertyName)
             {
                 var nextPropertyName = forwardReader.GetString();
-                path.Push(nextPropertyName);
                 if (nextPropertyName == "type")
                 {
                     forwardReader.Read();
@@ -58,14 +55,6 @@ public class ConvertResolvable : JsonConverter<IResolvable>
                     
                     return JsonSerializer.Deserialize<Models.Object>(ref reader, options);
                 }
-
-                path.Pop();
-
-                // if (nextPropertyName == "href")
-                // return JsonSerializer.Deserialize<Link>(reader: ref reader, options);
-
-                // if (nextPropertyName == "id")
-                // return JsonSerializer.Deserialize<Models.Object>(reader: ref reader, options);
             }
 
             if (forwardReader.TokenType is JsonTokenType.StartObject or JsonTokenType.StartArray)

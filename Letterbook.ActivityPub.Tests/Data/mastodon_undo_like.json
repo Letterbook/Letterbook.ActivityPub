@@ -1,0 +1,12 @@
+﻿{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "actor": "https://mastodon.example/users/phoenix",
+  "id": "https://mastodon.example/users/phoenix#likes/557/undo",
+  "object": {
+    "actor": "https://mastodon.example/users/phoenix",
+    "id": "https://mastodon.example/users/phoenix#likes/557",
+    "object": "https://letterbook.example/activitypub/helge/id567",
+    "type": "Like"
+  },
+  "type": "Undo"
+}

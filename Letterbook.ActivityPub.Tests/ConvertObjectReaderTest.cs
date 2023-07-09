@@ -6,17 +6,23 @@ namespace Letterbook.ActivityPub.Tests;
 
 public class ConvertObjectReaderTest
 {
-    private string _dataDir => Path.Join(
+    private static string DataDir => Path.Join(
         Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Data");
 
-    [Fact]
-    public void CanDeserialize()
+    [Theory]
+    [InlineData("mastodon_create_note.json", "Create")]
+    [InlineData("mastodon_create_remote_note.json", "Create")]
+    [InlineData("mastodon_delete_note.json", "Delete")]
+    [InlineData("mastodon_follow.json", "Follow")]
+    [InlineData("mastodon_like.json", "Like")]
+    [InlineData("mastodon_undo_like.json", "Undo")]
+    [InlineData("mastodon_update_note.json", "Update")]
+    public void CanDeserializeRealWorldActivities(string activity, string expected)
     {
+        var fs = new FileStream(Path.Join(DataDir, activity), FileMode.Open);
         var opts = new JsonSerializerOptions(JsonSerializerDefaults.Web);
-        var actual = JsonSerializer
-            .Deserialize<Activity>(new FileStream(Path.Join(_dataDir, "mastodon_create_note.json"), FileMode.Open),
-                opts);
+        var actual = JsonSerializer.Deserialize<Activity>(fs, opts)!;
 
-        Assert.Equal("Create", actual.Type.First());
+        Assert.Equal(expected, actual.Type.First());
     }
 }

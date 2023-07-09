@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Letterbook.ActivityPub", "Letterbook.ActivityPub\Letterbook.ActivityPub.csproj", "{AB14DD15-593A-454D-AC78-1D2365EFA2A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Letterbook.ActivityPub.Tests", "Letterbook.ActivityPub.Tests\Letterbook.ActivityPub.Tests.csproj", "{870D8AB7-AD8E-42FA-AD6D-428CE1E470C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{AB14DD15-593A-454D-AC78-1D2365EFA2A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB14DD15-593A-454D-AC78-1D2365EFA2A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB14DD15-593A-454D-AC78-1D2365EFA2A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{870D8AB7-AD8E-42FA-AD6D-428CE1E470C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{870D8AB7-AD8E-42FA-AD6D-428CE1E470C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{870D8AB7-AD8E-42FA-AD6D-428CE1E470C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{870D8AB7-AD8E-42FA-AD6D-428CE1E470C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

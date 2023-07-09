@@ -1,3 +1,57 @@
 ﻿{
-
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    {
+      "atomUri": "ostatus:atomUri",
+      "conversation": "ostatus:conversation",
+      "inReplyToAtomUri": "ostatus:inReplyToAtomUri",
+      "ostatus": "http://ostatus.org#",
+      "sensitive": "as:sensitive",
+      "toot": "http://joinmastodon.org/ns#",
+      "votersCount": "toot:votersCount"
+    }
+  ],
+  "actor": "https://mastodon.example/users/john",
+  "cc": ["https://mastodon.example/users/john/followers"],
+  "id": "https://mastodon.example/users/john/statuses/9876/activity",
+  "object": {
+    "atomUri": "https://mastodon.example/users/john/statuses/9876",
+    "attachment": [],
+    "attributedTo": "https://mastodon.example/users/john",
+    "cc": ["https://mastodon.example/users/john/followers"],
+    "content": "<p>Creating Test Data!!! :)</p>",
+    "contentMap": {
+      "en": "<p>Creating Test Data!!! :)</p>"
+    },
+    "conversation": "tag:mas.to,2023-02-04:objectId=8765:objectType=Conversation",
+    "id": "https://mastodon.example/users/john/statuses/9876",
+    "inReplyTo": null,
+    "inReplyToAtomUri": null,
+    "published": "2023-02-04T08:52:55Z",
+    "replies": {
+      "first": {
+        "items": [],
+        "next": "https://mastodon.example/users/john/statuses/9876/replies?only_other_accounts=true&page=true",
+        "partOf": "https://mastodon.example/users/john/statuses/9876/replies",
+        "type": "CollectionPage"
+      },
+      "id": "https://mastodon.example/users/john/statuses/9876/replies",
+      "type": "Collection"
+    },
+    "sensitive": false,
+    "summary": null,
+    "tag": [],
+    "to": ["https://www.w3.org/ns/activitystreams#Public"],
+    "type": "Note",
+    "url": "https://mastodon.example/@john/9876"
+  },
+  "published": "2023-02-04T08:52:55Z",
+  "signature": {
+    "created": "2023-02-04T08:52:55Z",
+    "creator": "https://mastodon.example/users/john#main-key",
+    "signatureValue": "booa==",
+    "type": "RsaSignature2017"
+  },
+  "to": ["https://www.w3.org/ns/activitystreams#Public"],
+  "type": "Create"
 }

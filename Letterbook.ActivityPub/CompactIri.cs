@@ -20,9 +20,9 @@ public class CompactIri : Uri
         new KeyValuePair<string, string>("vcard", "http://www.w3.org/2006/vcard/ns#"),
     }));
 
-    public string? Namespace { get; init; }
-    public string? Prefix { get; init; }
-    public string? Suffix { get; init; }
+    public string? Namespace { get; }
+    public string? Prefix { get; }
+    public string? Suffix { get; }
 
     public CompactIri(string ns, string prefix, string suffix) : base(ns + suffix)
     {

@@ -36,10 +36,10 @@ public class ConvertList<T> : JsonConverter<IList<T>>
         switch (value.Count)
         {
             case 1:
-                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value));
+                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value.First()));
                 break;
             case >1:
-                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value.First()));
+                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value));
                 break;
             default:
                 writer.WriteNullValue();

@@ -71,6 +71,6 @@ public class ConvertResolvable : JsonConverter<IResolvable>
 
     public override void Write(Utf8JsonWriter writer, IResolvable value, JsonSerializerOptions options)
     {
-        JsonSerializer.Serialize(writer, options);
+        writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(writer, options));
     }
 }

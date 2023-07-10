@@ -15,7 +15,6 @@ public class ConvertList<T> : JsonConverter<IList<T>>
         if (reader.TokenType == JsonTokenType.StartArray)
             return JsonSerializer.Deserialize<List<T>>(reader: ref reader, options);
 
-        var tokenString = reader.TokenType == JsonTokenType.String ? reader.GetString() : null;
         var result = new List<T>();
         try
         {
@@ -36,10 +35,10 @@ public class ConvertList<T> : JsonConverter<IList<T>>
         switch (value.Count)
         {
             case 1:
-                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value.First()));
+                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value.First(), options));
                 break;
             case >1:
-                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value));
+                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value, options));
                 break;
             default:
                 writer.WriteNullValue();

@@ -29,6 +29,6 @@ public class ConvertCompactIri : JsonConverter<CompactIri>
 
     public override void Write(Utf8JsonWriter writer, CompactIri value, JsonSerializerOptions options)
     {
-        throw new NotImplementedException();
+        writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value.ToCompact(), options));
     }
 }

@@ -7,7 +7,7 @@ namespace Letterbook.ActivityPub.Models;
 
 public class Link : IResolvable
 {
-    [Required] public Uri Href { get; set; }
+    [Required] public CompactIri Href { get; set; }
 
     public string? Rel { get; set; }
     public ContentType? MediaType { get; set; }
@@ -19,14 +19,14 @@ public class Link : IResolvable
     [JsonConverter(typeof(ConvertList<IResolvable>))]
     public IList<IResolvable> Preview { get; set; } = new List<IResolvable>();
 
-    public Uri? SourceUrl => Href;
+    public CompactIri? SourceUrl => Href;
     public bool Verified { get; set; }
 
-    public Link(string href) : this(new Uri(href))
+    public Link(string href) : this(new CompactIri(href))
     {
     }
 
-    public Link(Uri href)
+    public Link(CompactIri href)
     {
         Href = href;
     }

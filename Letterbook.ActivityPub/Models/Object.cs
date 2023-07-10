@@ -5,7 +5,7 @@ namespace Letterbook.ActivityPub.Models;
 
 public class Object : IResolvable
 {
-    public Uri? Id { get; set; }
+    public CompactIri? Id { get; set; }
 
     [JsonConverter(typeof(ConvertList<string>))]
     public IList<string> Type { get; set; } = new List<string>();
@@ -74,6 +74,6 @@ public class Object : IResolvable
     public ContentType? MediaType { get; set; }
     public TimeSpan? Duration { get; set; }
 
-    public Uri? SourceUrl => Id;
+    public CompactIri? SourceUrl => Id;
     public bool Verified { get; set; } = false;
 }

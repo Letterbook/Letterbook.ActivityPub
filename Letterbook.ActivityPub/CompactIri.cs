@@ -1,5 +1,8 @@
-﻿namespace Letterbook.ActivityPub;
+﻿using System.Text.Json.Serialization;
 
+namespace Letterbook.ActivityPub;
+
+[JsonConverter(typeof(ConvertCompactIri))]
 public class CompactIri : Uri
 {
     public static Dictionary<string, string> Namespaces = new(new List<KeyValuePair<string, string>>(new[]
@@ -39,9 +42,6 @@ public class CompactIri : Uri
     {
     }
     
-    public CompactIri(Uri uri) : base(uri.ToString())
-    {}
-
     public static bool TryCreateCompact(string compactUrl, out CompactIri? value)
     {
         if (IsCompactUri(compactUrl, out var prefix, out var suffix)
@@ -54,7 +54,7 @@ public class CompactIri : Uri
         }
 
         var result = TryCreate(compactUrl, UriKind.Absolute, out var uri);
-        value = result ? new CompactIri(uri!) : default;
+        value = result ? new CompactIri(uri!.ToString()) : default;
         return result;
     }
 

@@ -23,7 +23,7 @@ public class ConvertObjectReaderTest
         var opts = new JsonSerializerOptions(JsonOptions.ActivityPub);
         var actual = JsonSerializer.Deserialize<Activity>(fs, opts)!;
         
-        Assert.Equal(expected, actual.Type.First());
+        Assert.Equal(expected, actual.Type);
         Assert.NotEmpty(actual.LdContext);
     }
 }

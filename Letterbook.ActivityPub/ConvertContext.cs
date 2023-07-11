@@ -6,14 +6,6 @@ namespace Letterbook.ActivityPub;
 
 public class ConvertContext : JsonConverter<IEnumerable<LdContext>>
 {
-    public override bool CanConvert(Type typeToConvert)
-    {
-        // var result = typeof(ICollection<LdContext>).IsAssignableFrom(typeToConvert);
-        
-        // return !result;
-        return true;
-    }
-
     public override IEnumerable<LdContext>? Read(ref Utf8JsonReader reader, Type typeToConvert,
         JsonSerializerOptions options)
     {

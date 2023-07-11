@@ -34,21 +34,16 @@ public class ConvertContext : JsonConverter<IEnumerable<LdContext>>
                 {
                     var value = reader.GetString();
                     if (value is not null) collection.Add(new LdContext(value));
+                    continue;
                 }
 
-                if (reader.TokenType == JsonTokenType.PropertyName)
+                if (reader.TokenType == JsonTokenType.StartObject)
                 {
-                    var prefix = reader.GetString();
-                    reader.Read();
-                    if (reader.TokenType != JsonTokenType.String)
+                    while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
                     {
-                        throw new JsonException($"Invalid Json property {reader.TokenType} at {reader.TokenType}");
+                        collection.Add(ReadContextProperty(ref reader));
                     }
-
-                    var suffix = reader.GetString();
-                    if (prefix is null || suffix is null)
-                        throw new JsonException($"Invalid @context entry at {reader.TokenType}");
-                    collection.Add(new LdContext(prefix, suffix));
+                    continue;
                 }
 
                 throw new JsonException("Invalid @context");
@@ -64,5 +59,24 @@ public class ConvertContext : JsonConverter<IEnumerable<LdContext>>
     {
         // var v = value as IEnumerable<LdContext>;
         writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value, options));
+    }
+
+    private LdContext ReadContextProperty(ref Utf8JsonReader reader)
+    {
+        if (reader.TokenType == JsonTokenType.PropertyName)
+        {
+            var prefix = reader.GetString();
+            reader.Read();
+            if (reader.TokenType != JsonTokenType.String)
+            {
+                throw new JsonException($"Invalid Json property {reader.TokenType} at {reader.Position}");
+            }
+
+            var suffix = reader.GetString();
+            if (prefix is null || suffix is null)
+                throw new JsonException($"Invalid @context entry at {reader.TokenType}");
+            return new LdContext(prefix, suffix);
+        }
+        throw new JsonException($"Invalid @context entry at {reader.TokenType}");
     }
 }

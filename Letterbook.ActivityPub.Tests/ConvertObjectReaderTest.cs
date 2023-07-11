@@ -20,9 +20,10 @@ public class ConvertObjectReaderTest
     public void CanDeserializeRealWorldActivities(string activity, string expected)
     {
         var fs = new FileStream(Path.Join(DataDir, activity), FileMode.Open);
-        var opts = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        var opts = new JsonSerializerOptions(JsonOptions.ActivityPub);
         var actual = JsonSerializer.Deserialize<Activity>(fs, opts)!;
-
+        
         Assert.Equal(expected, actual.Type.First());
+        Assert.NotEmpty(actual.LdContext);
     }
 }

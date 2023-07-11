@@ -1,5 +1,5 @@
 ﻿{
-  "@context": "https://www.w3.org/ns/activitystreams",
+  "@context": ["https://www.w3.org/ns/activitystreams"],
   "id": "https://example.com/mastodon_follow_1.json",
   "type": "Follow",
   "actor": "https://example.com/users/JohnMastodon",

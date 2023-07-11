@@ -57,11 +57,21 @@ public class ConvertContext : JsonConverter<IEnumerable<LdContext>>
 
     public override void Write(Utf8JsonWriter writer, IEnumerable<LdContext> value, JsonSerializerOptions options)
     {
+        var list = value.Select(LdContext.AsListItem).Where(item => item is not null).ToList<object?>();
+        var map = value.Select(LdContext.AsMapItem).Where(item => item is not null)
+            .ToDictionary(pair => pair!.Value.key, pair => pair!.Value.value);
+        if (map.Any()) list.Add(map);
+
+        if (list.Count == 1 && list.First() is string f)
+        {
+            writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(f));
+            return;
+        }
         // var v = value as IEnumerable<LdContext>;
-        writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value, options));
+        writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(list, options));
     }
 
-    private LdContext ReadContextProperty(ref Utf8JsonReader reader)
+    private static LdContext ReadContextProperty(ref Utf8JsonReader reader)
     {
         if (reader.TokenType == JsonTokenType.PropertyName)
         {

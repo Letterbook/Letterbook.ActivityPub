@@ -52,10 +52,10 @@ public class LdContext : IEquatable<LdContext>
         return item.Prefix is null ? item.Suffix : null;
     }
 
-    public static KeyValuePair<string, string>? AsMapItem(LdContext item)
+    public static (string key, string value)? AsMapItem(LdContext item)
     {
         return item.Prefix is null 
             ? null 
-            : new KeyValuePair<string, string>(item.Prefix, item.Suffix);
+            : (key: item.Prefix, value: item.Suffix);
     }
 }

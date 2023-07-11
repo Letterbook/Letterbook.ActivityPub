@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Net.Mime;
 using System.Text.Json.Serialization;
 
 namespace Letterbook.ActivityPub.Models;
@@ -17,6 +18,7 @@ public class Object : IResolvable
 
     public CompactIri? Id { get; set; }
 
+    [Required]
     [JsonConverter(typeof(ConvertList<string>))]
     public IList<string> Type { get; set; } = new List<string>();
 

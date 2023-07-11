@@ -25,7 +25,10 @@ public static class JsonOptions
                             propertyInfo.PropertyType != typeof(string))
                         {
                             propertyInfo.ShouldSerialize = static (obj, value) =>
-                                ((IList)value)?.Count != 0 && value is not null;
+                            {
+                                var v = (value as IEnumerable<object>);
+                                return v?.Any() == true;
+                            };
                         }
                     }
                 }),

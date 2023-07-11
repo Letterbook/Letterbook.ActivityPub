@@ -5,6 +5,16 @@ namespace Letterbook.ActivityPub.Models;
 
 public class Object : IResolvable
 {
+    private IEnumerable<LdContext> _ldContext = new HashSet<LdContext>();
+
+    [JsonPropertyName("@context")]
+    [JsonConverter(typeof(ConvertContext))]
+    public IEnumerable<LdContext> LdContext
+    {
+        get => _ldContext;
+        set => _ldContext = value;
+    }
+
     public CompactIri? Id { get; set; }
 
     [JsonConverter(typeof(ConvertList<string>))]
@@ -74,6 +84,16 @@ public class Object : IResolvable
     public ContentType? MediaType { get; set; }
     public TimeSpan? Duration { get; set; }
 
-    public CompactIri? SourceUrl => Id;
-    public bool Verified { get; set; } = false;
+    [JsonIgnore] CompactIri? IResolvable.SourceUrl => Id;
+    [JsonIgnore] bool IResolvable.Verified { get; set; } = false;
+
+    public void AddContext(LdContext item)
+    {
+        (_ldContext as HashSet<LdContext>)?.Add(item);
+    }
+
+    public void AddContext()
+    {
+        AddContext(Models.LdContext.ActivityStreams);
+    }
 }

@@ -21,8 +21,11 @@ public class ConvertObjectReaderTest
     {
         var fs = new FileStream(Path.Join(DataDir, activity), FileMode.Open);
         var opts = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+        // var doc = JsonDocument.Parse(fs);
         var actual = JsonSerializer.Deserialize<Activity>(fs, opts)!;
-
+        // var actual = default(Models.Object);
+        
         Assert.Equal(expected, actual.Type.First());
+        Assert.NotEmpty(actual.LdContext);
     }
 }

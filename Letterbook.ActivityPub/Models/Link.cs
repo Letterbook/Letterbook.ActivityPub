@@ -7,7 +7,8 @@ namespace Letterbook.ActivityPub.Models;
 
 public class Link : IResolvable
 {
-    [Required] public CompactIri Href { get; set; }
+    public CompactIri Href { get; set; }
+    public string Type { get; set; } = "Link";
 
     public string? Rel { get; set; }
     public ContentType? MediaType { get; set; }

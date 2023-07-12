@@ -70,6 +70,7 @@ public class ConvertResolvable : JsonConverter<IResolvable>
 
     public override void Write(Utf8JsonWriter writer, IResolvable value, JsonSerializerOptions options)
     {
-        writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value, options));
+        if(value is Models.Object asObject) writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(asObject, options));
+        if(value is Link asLink) writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(asLink, options));
     }
 }

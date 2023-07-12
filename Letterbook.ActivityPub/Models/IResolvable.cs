@@ -7,4 +7,5 @@ public interface IResolvable
 {
     public CompactIri? SourceUrl { get; }
     public bool Verified { get; set; }
+    public string Type { get; set; }
 }

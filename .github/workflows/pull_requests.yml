@@ -24,8 +24,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
-      - name: Install GitTools
-        uses: GitTools/actions@v0.10.2
       - name: Setup GitTools
         uses: gittools/actions/gitversion/setup@v0
         with:

@@ -23,9 +23,6 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
-      - name: Test Publish
-        run: ls
-        
       - name: Publish
         if: ${{ false }}
-        run: dotnet nuget push *.nupkg
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

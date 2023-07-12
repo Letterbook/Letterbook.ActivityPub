@@ -1,0 +1,13 @@
+assembly-versioning-scheme: MajorMinorPatchTag
+assembly-file-versioning-scheme: MajorMinorPatch
+mode: ContinuousDelivery
+next-version: 1.0.0
+build-metadata-padding: 4
+legacy-semver-padding: 2
+commits-since-version-source-padding: 2
+branches: 
+  pull-request:
+    tag: 'ci'
+ignore:
+  sha: []
+merge-message-formats: {}

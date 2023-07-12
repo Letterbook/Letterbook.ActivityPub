@@ -1,0 +1,28 @@
+﻿name: Publish
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.merged }}
+    steps:
+      - name: Download Nupkg
+        id: download-nupkg
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: pull_request.yml
+          pr: ${{ github.event.pull_request.number }}
+          name: nupkg
+      
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Publish
+        if: ${{ false }}
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

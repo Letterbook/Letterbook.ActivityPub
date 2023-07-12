@@ -8,7 +8,7 @@ namespace Letterbook.ActivityPub;
 
 public static class JsonOptions
 {
-    public static JsonSerializerOptions ActivityPub = new JsonSerializerOptions()
+    private static readonly Func<JsonSerializerOptions> OptionGenerator = () => new JsonSerializerOptions()
     {
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -21,6 +21,8 @@ public static class JsonOptions
                     if (!typeof(IResolvable).IsAssignableFrom(info.Type)) return;
                     foreach (var propertyInfo in info.Properties)
                     {
+                        // Prevent serializing IEnumerable fields with length 0
+                        // But leave strings alone
                         if (typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType) &&
                             propertyInfo.PropertyType != typeof(string))
                         {
@@ -35,4 +37,6 @@ public static class JsonOptions
             }
         }
     };
+    private static readonly Lazy<JsonSerializerOptions> Lazy = new(OptionGenerator!);
+    public static JsonSerializerOptions ActivityPub => Lazy.Value;
 }

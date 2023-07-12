@@ -4,6 +4,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Letterbook.ActivityPub", "L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Letterbook.ActivityPub.Tests", "Letterbook.ActivityPub.Tests\Letterbook.ActivityPub.Tests.csproj", "{870D8AB7-AD8E-42FA-AD6D-428CE1E470C8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{BF63009D-E6E8-4B3A-BF9C-7B5141C71ACE}"
+	ProjectSection(SolutionItems) = preProject
+		GitVersion.yml = GitVersion.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github", "Github", "{574489AE-2423-4CCE-9A31-FF351C92B4AC}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\pull_requests.yml = .github\workflows\pull_requests.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

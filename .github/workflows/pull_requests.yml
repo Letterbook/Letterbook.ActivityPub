@@ -2,9 +2,6 @@ name: Build
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - 'main'
   pull_request:
     types:
       - opened
@@ -19,14 +16,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+#      Setup
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
+      - name: Install GitTools
+        uses: GitTools/actions@v0.10.2
+      - name: Setup GitTools
+        uses: gittools/actions/gitversion/setup@v0
+        with:
+          versionSpec: '5.x'
+      - name: Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0
+        
+#        Lint, Test, Build
       - name: Install dependencies
         run: dotnet restore
       - name: Build
         run: dotnet build Letterbook.ActivityPub.sln
+#        TODO: test results and coverage
       - name: Test
         run: dotnet test Letterbook.ActivityPub.sln
+      - name: Package for Nuget
+        run: 'dotnet pack Letterbook.ActivityPub -p:PackageVersion=$PACKAGE_VERSION -o ./'
+        env: 
+          PACKAGE_VERSION: ${{steps.gitversion.outputs.nuGetVersionV2}}
+      - name: Store Nupkg
+        uses: actions/upload-artifact@v3
+        with:
+          name: nupkg
+          path: ./*.nupkg
+          if-no-files-found: error
+          retention-days: 7

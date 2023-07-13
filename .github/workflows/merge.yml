@@ -1,4 +1,5 @@
 ﻿name: Publish
+run-name: 'Publish packages from PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}'
 
 on:
   workflow_dispatch: 
@@ -21,11 +22,6 @@ jobs:
           workflow: pull_requests.yml
           pr: ${{ github.event.pull_request.number }}
           name: nupkg
-#      - name: Download Nupkg
-#        id: download-nupkg
-#        run: gh run
-#        with:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v3

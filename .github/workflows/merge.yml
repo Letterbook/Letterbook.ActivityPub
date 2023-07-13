@@ -18,7 +18,7 @@ jobs:
         uses: dawidd6/action-download-artifact@v2
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
-          workflow: Build
+          workflow: pull_requests.yml
           pr: ${{ github.event.pull_request.number }}
           name: nupkg
 #      - name: Download Nupkg

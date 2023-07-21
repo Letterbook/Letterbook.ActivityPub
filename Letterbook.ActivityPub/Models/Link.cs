@@ -20,7 +20,12 @@ public class Link : IResolvable
     [JsonConverter(typeof(ConvertList<IResolvable>))]
     public IList<IResolvable> Preview { get; set; } = new List<IResolvable>();
 
-    [JsonIgnore] CompactIri? IResolvable.Id => Href;
+    [JsonIgnore]
+    public CompactIri? Id
+    {
+        get => Href;
+        set => Href = value!;
+    }
     [JsonIgnore] bool IResolvable.Verified { get; set; } = false;
 
     public Link(string href) : this(new CompactIri(href))

@@ -49,7 +49,9 @@ public class CompactIri : Uri
     }
     
     public static implicit operator CompactIri(string s) => new (s);
-    
+
+    public static CompactIri FromUri(Uri u) => new (u.ToString());
+
     public static bool TryCreateCompact(string compactUrl, out CompactIri? value)
     {
         if (IsCompactUri(compactUrl, out var prefix, out var suffix)

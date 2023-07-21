@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using System.Text.Json.Serialization;
 
 namespace Letterbook.ActivityPub.Models;
@@ -83,7 +82,6 @@ public class Object : IResolvable
     public ContentType? MediaType { get; set; }
     public TimeSpan? Duration { get; set; }
 
-    [JsonIgnore] CompactIri? IResolvable.SourceUrl => Id;
     [JsonIgnore] bool IResolvable.Verified { get; set; } = false;
 
     public void AddContext(LdContext item)

@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github", "Github", "{574489AE-2423-4CCE-9A31-FF351C92B4AC}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\pull_requests.yml = .github\workflows\pull_requests.yml
+		.github\workflows\merge.yml = .github\workflows\merge.yml
 	EndProjectSection
 EndProject
 Global

@@ -2,8 +2,6 @@
 run-name: 'Publish packages from PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}'
 
 on:
-  workflow_dispatch: 
-    
   pull_request:
     types:
       - closed

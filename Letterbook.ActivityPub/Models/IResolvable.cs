@@ -5,7 +5,7 @@ namespace Letterbook.ActivityPub.Models;
 [JsonConverter(typeof(ConvertResolvable))]
 public interface IResolvable
 {
-    public CompactIri? SourceUrl { get; }
+    public CompactIri? Id { get; }
     public bool Verified { get; set; }
     public string Type { get; set; }
 }

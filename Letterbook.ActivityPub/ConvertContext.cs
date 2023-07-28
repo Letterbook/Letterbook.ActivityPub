@@ -15,7 +15,7 @@ public class ConvertContext : JsonConverter<IEnumerable<LdContext>>
         switch (reader.TokenType)
         {
             case JsonTokenType.String:
-                ReadContextString(reader, collection);
+                ReadContextString(ref reader, collection);
                 break;
             
             case JsonTokenType.StartObject:
@@ -40,7 +40,7 @@ public class ConvertContext : JsonConverter<IEnumerable<LdContext>>
             switch (reader.TokenType)
             {
                 case JsonTokenType.String:
-                    ReadContextString(reader, collection);
+                    ReadContextString(ref reader, collection);
                     break;
                 
                 case JsonTokenType.StartObject:
@@ -53,7 +53,7 @@ public class ConvertContext : JsonConverter<IEnumerable<LdContext>>
         }
     }
     
-    private static void ReadContextString(Utf8JsonReader reader, HashSet<LdContext> collection)
+    private static void ReadContextString(ref Utf8JsonReader reader, HashSet<LdContext> collection)
     {
         var value = reader.GetString();
         if (value is not null)

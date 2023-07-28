@@ -98,7 +98,7 @@ public class ConvertContext : JsonConverter<IEnumerable<LdContext>>
         // Values *with* a prefix should be combined into an object
         var objectValues = allValues
             .Select(LdContext.AsMapItem)
-            .Where(item => item is not null)!
+            .Where(item => item is not null)
             .ToDictionary(pair => pair!.Value.key, pair => pair!.Value.value);
         
         // If we have only a string, then write it as-is

@@ -1,7 +1,10 @@
 ﻿using System.Text.Json;
-using FluentAssertions;
 using Letterbook.ActivityPub.Models;
 using Object = Letterbook.ActivityPub.Models.Object;
+
+// Disable this check - its bugged.
+// https://resharper-support.jetbrains.com/hc/en-us/community/posts/206655415
+// ReSharper disable ParameterOnlyUsedForPreconditionCheck.Local
 
 namespace Letterbook.ActivityPub.Tests;
 
@@ -30,9 +33,12 @@ public abstract class ConvertContextTests
         public void ReadStringAsSingleSuffix()
         {
             InputJson = """{"@context":"https://www.w3.org/ns/activitystreams","type":"Object"}""";
-            OutputContexts.Should().HaveCount(1);
-            OutputContexts[0].Prefix.Should().BeNull();
-            OutputContexts[0].Suffix.Should().Be("https://www.w3.org/ns/activitystreams");
+            
+            Assert.Collection(OutputContexts, ctx =>
+            {
+                Assert.Null(ctx.Prefix);
+                Assert.Equal("https://www.w3.org/ns/activitystreams", ctx.Suffix);
+            });
         }
         
         [Fact]
@@ -49,10 +55,23 @@ public abstract class ConvertContextTests
                 }
                 """;
             
-            OutputContexts.Should().HaveCount(3);
-            OutputContexts.Should().Contain(context => context.Prefix == "@import" && context.Suffix == "https://www.w3.org/ns/activitystreams");
-            OutputContexts.Should().Contain(context => context.Prefix == "term1" && context.Suffix == "definition1");
-            OutputContexts.Should().Contain(context => context.Prefix == "term2" && context.Suffix == "definition2");
+            Assert.Collection(OutputContexts, 
+                ctx =>
+                {
+                    Assert.Equal("@import", ctx.Prefix);
+                    Assert.Equal("https://www.w3.org/ns/activitystreams", ctx.Suffix);
+                },
+                ctx =>
+                {
+                    Assert.Equal("term1", ctx.Prefix);
+                    Assert.Equal("definition1", ctx.Suffix);
+                },
+                ctx =>
+                {
+                    Assert.Equal("term2", ctx.Prefix);
+                    Assert.Equal("definition2", ctx.Suffix);
+                }
+            );
         }
 
         [Fact]
@@ -68,9 +87,18 @@ public abstract class ConvertContextTests
                 }
                 """;
             
-            OutputContexts.Should().HaveCount(2);
-            OutputContexts.Should().Contain(context => context.Prefix == null && context.Suffix == "https://www.w3.org/ns/activitystreams");
-            OutputContexts.Should().Contain(context => context.Prefix == null && context.Suffix == "https://example.com");
+            Assert.Collection(OutputContexts, 
+                ctx =>
+                {
+                    Assert.Null(ctx.Prefix);
+                    Assert.Equal("https://www.w3.org/ns/activitystreams", ctx.Suffix);
+                },
+                ctx =>
+                {
+                    Assert.Null(ctx.Prefix);
+                    Assert.Equal("https://example.com", ctx.Suffix);
+                }
+            );
         }
 
         [Fact]
@@ -91,10 +119,23 @@ public abstract class ConvertContextTests
                 }
                 """;
             
-            OutputContexts.Should().HaveCount(3);
-            OutputContexts.Should().Contain(context => context.Prefix == "@import" && context.Suffix == "https://www.w3.org/ns/activitystreams");
-            OutputContexts.Should().Contain(context => context.Prefix == "term1" && context.Suffix == "definition1");
-            OutputContexts.Should().Contain(context => context.Prefix == "term2" && context.Suffix == "definition2");
+            Assert.Collection(OutputContexts, 
+                ctx =>
+                {
+                    Assert.Equal("@import", ctx.Prefix);
+                    Assert.Equal("https://www.w3.org/ns/activitystreams", ctx.Suffix);
+                },
+                ctx =>
+                {
+                    Assert.Equal("term1", ctx.Prefix);
+                    Assert.Equal("definition1", ctx.Suffix);
+                },
+                ctx =>
+                {
+                    Assert.Equal("term2", ctx.Prefix);
+                    Assert.Equal("definition2", ctx.Suffix);
+                }
+            );
         }
 
         [Fact]
@@ -113,10 +154,23 @@ public abstract class ConvertContextTests
                 }
                 """;
             
-            OutputContexts.Should().HaveCount(3);
-            OutputContexts.Should().Contain(context => context.Prefix == null && context.Suffix == "https://www.w3.org/ns/activitystreams");
-            OutputContexts.Should().Contain(context => context.Prefix == "term1" && context.Suffix == "definition1");
-            OutputContexts.Should().Contain(context => context.Prefix == "term2" && context.Suffix == "definition2");
+            Assert.Collection(OutputContexts, 
+                ctx =>
+                {
+                    Assert.Null(ctx.Prefix);
+                    Assert.Equal("https://www.w3.org/ns/activitystreams", ctx.Suffix);
+                },
+                ctx =>
+                {
+                    Assert.Equal("term1", ctx.Prefix);
+                    Assert.Equal("definition1", ctx.Suffix);
+                },
+                ctx =>
+                {
+                    Assert.Equal("term2", ctx.Prefix);
+                    Assert.Equal("definition2", ctx.Suffix);
+                }
+            );
         }
     }
 
@@ -138,7 +192,6 @@ public abstract class ConvertContextTests
                 };
                 
                 var opts = new JsonSerializerOptions(JsonOptions.ActivityPub);
-                var json = JsonSerializer.Serialize(obj, opts);
                 var elem = JsonSerializer.SerializeToElement(obj, opts);
                 if (!elem.TryGetProperty("@context", out var context))
                     throw new JsonException("Bad json - missing @context");
@@ -151,8 +204,8 @@ public abstract class ConvertContextTests
         {
             InputContexts.Add(new LdContext("https://www.w3.org/ns/activitystreams"));
             
-            OutputJson.ValueKind.Should().Be(JsonValueKind.String);
-            OutputJson.GetString().Should().Be("https://www.w3.org/ns/activitystreams");
+            Assert.Equal(JsonValueKind.String, OutputJson.ValueKind);
+            Assert.Equal("https://www.w3.org/ns/activitystreams", OutputJson.GetString());
         }
 
         [Fact]
@@ -160,8 +213,8 @@ public abstract class ConvertContextTests
         {
             InputContexts.Add(new LdContext("term", "definition"));
             
-            OutputJson.ValueKind.Should().Be(JsonValueKind.Object);
-            OutputJson.GetProperty("term").GetString().Should().Be("definition");
+            Assert.Equal(JsonValueKind.Object, OutputJson.ValueKind);
+            Assert.Equal("definition", OutputJson.GetProperty("term").GetString());
         }
 
         [Fact]
@@ -170,9 +223,9 @@ public abstract class ConvertContextTests
             InputContexts.Add(new LdContext("term1", "definition1"));
             InputContexts.Add(new LdContext("term2", "definition2"));
             
-            OutputJson.ValueKind.Should().Be(JsonValueKind.Object);
-            OutputJson.GetProperty("term1").GetString().Should().Be("definition1");
-            OutputJson.GetProperty("term2").GetString().Should().Be("definition2");
+            Assert.Equal(JsonValueKind.Object, OutputJson.ValueKind);
+            Assert.Equal("definition1", OutputJson.GetProperty("term1").GetString());
+            Assert.Equal("definition2", OutputJson.GetProperty("term2").GetString());
         }
 
         [Fact]
@@ -181,11 +234,19 @@ public abstract class ConvertContextTests
             InputContexts.Add(new LdContext("https://www.w3.org/ns/activitystreams"));
             InputContexts.Add(new LdContext("https://example.com"));
             
-            OutputJson.ValueKind.Should().Be(JsonValueKind.Array);
-            var entries = OutputJson.EnumerateArray().ToList();
-            entries.Should().HaveCount(2);
-            entries.Should().Contain(e => e.ValueKind == JsonValueKind.String && e.GetString() == "https://www.w3.org/ns/activitystreams");
-            entries.Should().Contain(e => e.ValueKind == JsonValueKind.String && e.GetString() == "https://example.com");
+            Assert.Equal(JsonValueKind.Array, OutputJson.ValueKind);
+            Assert.Collection(OutputJson.EnumerateArray().ToList(),
+                e =>
+                {
+                    Assert.Equal(JsonValueKind.String, e.ValueKind);
+                    Assert.Equal("https://www.w3.org/ns/activitystreams", e.GetString());
+                },
+                e =>
+                {
+                    Assert.Equal(JsonValueKind.String, e.ValueKind);
+                    Assert.Equal("https://example.com", e.GetString());
+                }
+            );
         }
 
         [Fact]
@@ -194,11 +255,19 @@ public abstract class ConvertContextTests
             InputContexts.Add(new LdContext("https://www.w3.org/ns/activitystreams"));
             InputContexts.Add(new LdContext("term", "definition"));
             
-            OutputJson.ValueKind.Should().Be(JsonValueKind.Array);
-            var entries = OutputJson.EnumerateArray().ToList();
-            entries.Should().HaveCount(2);
-            entries.Should().Contain(e => e.ValueKind == JsonValueKind.String && e.GetString() == "https://www.w3.org/ns/activitystreams");
-            entries.Should().Contain(e => e.ValueKind == JsonValueKind.Object && e.GetProperty("term").GetString() == "definition");
+            Assert.Equal(JsonValueKind.Array, OutputJson.ValueKind);
+            Assert.Collection(OutputJson.EnumerateArray().ToList(),
+                e =>
+                {
+                    Assert.Equal(JsonValueKind.String, e.ValueKind);
+                    Assert.Equal("https://www.w3.org/ns/activitystreams", e.GetString());
+                },
+                e =>
+                {
+                    Assert.Equal(JsonValueKind.Object, e.ValueKind);
+                    Assert.Equal("definition", e.GetProperty("term").GetString());
+                }
+            );
         }
     }
 }

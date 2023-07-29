@@ -67,7 +67,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: test-results
-          path: coverage
+          path: |
+            coverage
+            code-coverage-results.md
         # Even if the tests fail - publish the results
         if: always()
       - name: Save the PR number in an artifact

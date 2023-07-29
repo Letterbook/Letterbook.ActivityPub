@@ -14,9 +14,6 @@ on:
 
 jobs:
   build:
-    permissions:
-      pull-requests: write # Required for writing comments to the pull request
-      
     runs-on: ubuntu-latest
 
     steps:
@@ -56,14 +53,6 @@ jobs:
           indicators: true
           output: both
           thresholds: '60 80'
-      - name: Add Coverage PR Comment
-        uses: marocchino/sticky-pull-request-comment@v2
-        if: github.event_name == 'pull_request'
-        with:
-        # When re-run, hide existing comments and creates a new one
-          hide_and_recreate: true
-          hide_classify: "OUTDATED"
-          path: code-coverage-results.md
       - name: Package for Nuget
         run: 'dotnet pack Letterbook.ActivityPub -p:PackageVersion=$PACKAGE_VERSION -o ./'
         env: 

@@ -1,0 +1,33 @@
+﻿name: Build Results
+
+on:
+  workflow_run:
+    workflows:
+      - Build
+    types:
+      - completed
+        
+jobs: 
+  build-results:
+    permissions:
+      pull-requests: write # Required for writing comments to the pull request
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Restore Test Results
+        id: download-test-results
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: pull_requests.yml
+          pr: ${{ github.event.pull_request.number }}
+          name: test-results
+      - name: Add Coverage PR Comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: github.event_name == 'pull_request'
+        with:
+          # When re-run, hide existing comments and creates a new one
+          hide_and_recreate: true
+          hide_classify: "OUTDATED"
+          path: code-coverage-results.md

@@ -25,7 +25,7 @@ jobs:
           name: test-results
       - name: Add Coverage PR Comment
         uses: marocchino/sticky-pull-request-comment@v2
-        if: github.event_name == 'pull_request'
+        if: context.payload.workflow_run.event_name == 'pull_request'
         with:
           # When re-run, hide existing comments and creates a new one
           hide_and_recreate: true

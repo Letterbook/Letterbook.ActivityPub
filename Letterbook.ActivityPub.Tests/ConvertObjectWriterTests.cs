@@ -113,4 +113,29 @@ public class ConvertObjectWriterTests
 
         Assert.DoesNotMatch("@context", actual);
     }
+    
+    [Fact]
+    public void SerializeLinksAsString_WhenOnlyHRefIsSet()
+    {
+        var link = new Link("https://example.com/");
+        var output = JsonSerializer.Serialize<IResolvable>(link, JsonOptions.ActivityPub);
+        Assert.Equal("\"https://example.com/\"", output);
+    }
+
+    [Fact]
+    public void SerializeLinksAsObject_WhenPropertiesAreSet()
+    {
+        var link = new Link("https://example.com/")
+        {
+            Rel = "me"
+        };
+        
+        var output = JsonSerializer.SerializeToElement<IResolvable>(link, JsonOptions.ActivityPub);
+        
+        Assert.Equal(JsonValueKind.Object, output.ValueKind);
+        Assert.True(output.TryGetProperty("href", out var href));
+        Assert.Equal("https://example.com/", href.GetString());
+        Assert.True(output.TryGetProperty("rel", out var rel));
+        Assert.Equal("me", rel.GetString());
+    }
 }

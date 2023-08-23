@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using Letterbook.ActivityPub.Models;
+using Object = Letterbook.ActivityPub.Models.Object;
 
 namespace Letterbook.ActivityPub;
 
@@ -52,7 +53,7 @@ public class ConvertResolvable : JsonConverter<IResolvable>
                         return JsonSerializer.Deserialize<Activity>(ref reader, options);
                     }
                     
-                    return JsonSerializer.Deserialize<Models.Object>(ref reader, options);
+                    return JsonSerializer.Deserialize<Object>(ref reader, options);
                 }
             }
 
@@ -70,7 +71,32 @@ public class ConvertResolvable : JsonConverter<IResolvable>
 
     public override void Write(Utf8JsonWriter writer, IResolvable value, JsonSerializerOptions options)
     {
-        if(value is Models.Object asObject) writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(asObject, options));
-        if(value is Link asLink) writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(asLink, options));
+        if (value is Object asObject)
+            JsonSerializer.Serialize(writer, asObject, options);
+        
+        else if (value is Link asLink)
+            WriteLink(writer, asLink, options);
+        
+        else
+            throw new JsonException($"ConvertResolvable can't convert unknown IResolvable of type {value.GetType()}");
     }
+
+    private static void WriteLink(Utf8JsonWriter writer, Link asLink, JsonSerializerOptions options)
+    {
+        // AS links with *only* a target (href) should be serialized as a string instead
+        if (LinkHasOnlyHRef(asLink))
+            JsonSerializer.Serialize(writer, asLink.Href, options);
+        
+        else
+            JsonSerializer.Serialize(writer, asLink, options);
+    }
+
+    private static bool LinkHasOnlyHRef(Link asLink) =>
+        asLink.Rel == null &&
+        asLink.MediaType == null &&
+        asLink.Name == null &&
+        asLink.Hreflang == null &&
+        asLink.Height == null &&
+        asLink.Width == null &&
+        asLink.Preview.Count == 0;
 }

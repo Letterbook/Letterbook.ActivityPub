@@ -33,7 +33,8 @@ public class Object : IResolvable
     [JsonConverter(typeof(ConvertList<IResolvable>))]
     public IList<IResolvable> Context { get; set; } = new List<IResolvable>();
 
-    public ContentMap? Name { get; set; }
+    public string? Name { get; set; }
+    public ContentMap? NameMap { get; set; }
     public DateTime? EndTime { get; set; }
 
     [JsonConverter(typeof(ConvertList<IResolvable>))]
@@ -57,7 +58,8 @@ public class Object : IResolvable
     public DateTime? Published { get; set; }
     public Collection? Replies { get; set; }
     public DateTime? StartTime { get; set; }
-    public ContentMap? Summary { get; set; }
+    public string? Summary { get; set; }
+    public ContentMap? SummaryMap { get; set; }
 
     [JsonConverter(typeof(ConvertList<IResolvable>))]
     public IList<IResolvable> Tag { get; set; } = new List<IResolvable>();

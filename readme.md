@@ -1,6 +1,6 @@
 # Letterbook's ActivityPub library
 
-There are two primary goals with this project.
+There are two primary goals with this project:
 
 1. Type safety. This is dotnet, and we're acting like it.
 2. Spec conformance. This will implement the AP spec as fully and faithfully as possible.

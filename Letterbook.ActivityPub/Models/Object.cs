@@ -16,7 +16,7 @@ public class Object : IResolvable
     }
 
     public CompactIri? Id { get; set; }
-    public required string Type { get; set; }
+    public string Type { get; set; } = string.Empty;
 
     [JsonConverter(typeof(ConvertList<IResolvable>))]
     public IList<IResolvable> Attachment { get; set; } = new List<IResolvable>();
@@ -29,6 +29,7 @@ public class Object : IResolvable
 
     public string? Content { get; set; }
     public ContentMap? ContentMap { get; set; }
+    public Object? Source { get; set; }
 
     [JsonConverter(typeof(ConvertList<IResolvable>))]
     public IList<IResolvable> Context { get; set; } = new List<IResolvable>();

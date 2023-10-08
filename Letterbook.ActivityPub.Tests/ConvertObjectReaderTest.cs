@@ -41,6 +41,7 @@ public class ConvertObjectReaderTest
             Assert.Equal("<p>Creating Test Data!!! :)</p>", note.Content);
             Assert.Contains("en", note.ContentMap.Languages);
             Assert.Equal("<p>Creating Test Data!!! :)</p>", note.ContentMap["en"]);
+            Assert.Equal("Creating Test Data!!! :)", note.Source?.Content);
         }
         else
         {

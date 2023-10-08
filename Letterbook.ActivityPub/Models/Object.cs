@@ -84,8 +84,6 @@ public class Object : IResolvable
     public ContentType? MediaType { get; set; }
     public TimeSpan? Duration { get; set; }
 
-    [JsonIgnore] bool IResolvable.Verified { get; set; } = false;
-
     public void AddContext(LdContext item)
     {
         (_ldContext as HashSet<LdContext>)?.Add(item);

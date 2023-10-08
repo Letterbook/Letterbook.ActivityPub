@@ -6,6 +6,5 @@ namespace Letterbook.ActivityPub.Models;
 public interface IResolvable
 {
     public CompactIri? Id { get; }
-    public bool Verified { get; set; }
-    public string Type { get; set; }
+    public string Type { get; }
 }

@@ -32,6 +32,12 @@ public static class JsonOptions
                     }
                 }),
             }
+        },
+        Converters =
+        {
+            new ConvertMediaType(),
+            // new ConvertList<IResolvable>(), // TODO: make this halt so we don't have to instantiate it 20 times per object
+            new ConvertCollection(),
         }
     };
     private static readonly Lazy<JsonSerializerOptions> Lazy = new(OptionGenerator!);

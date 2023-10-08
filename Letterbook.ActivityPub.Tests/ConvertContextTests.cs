@@ -8,6 +8,7 @@ using Object = Letterbook.ActivityPub.Models.Object;
 
 namespace Letterbook.ActivityPub.Tests;
 
+[Trait("Models", "LdContext")]
 public abstract class ConvertContextTests
 {
     public class ReadShould : ConvertContextTests

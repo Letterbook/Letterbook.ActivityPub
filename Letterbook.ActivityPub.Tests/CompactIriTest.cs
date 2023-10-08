@@ -1,5 +1,6 @@
 ﻿namespace Letterbook.ActivityPub.Tests;
 
+[Trait("Models", "CompactIri")]
 public class CompactIriTest
 {
     [Theory]

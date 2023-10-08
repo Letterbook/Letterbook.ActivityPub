@@ -3,6 +3,7 @@ using Letterbook.ActivityPub.Models;
 
 namespace Letterbook.ActivityPub.Tests;
 
+[Trait("JsonConvert", "Serialize")]
 public class ConvertObjectWriterTests
 {
     [Fact]

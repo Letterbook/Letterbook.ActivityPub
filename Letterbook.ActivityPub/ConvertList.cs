@@ -38,7 +38,6 @@ public class ConvertList<T> : JsonConverter<IList<T>>
                 writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value.First(), options));
                 break;
             case >1:
-                // TODO: this is probably broken, test it
                 writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value, options));
                 break;
             default:

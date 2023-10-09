@@ -16,7 +16,7 @@ public class Object : IResolvable
     }
 
     public CompactIri? Id { get; set; }
-    public required string Type { get; set; }
+    public string Type { get; set; } = string.Empty;
 
     [JsonConverter(typeof(ConvertList<IResolvable>))]
     public IList<IResolvable> Attachment { get; set; } = new List<IResolvable>();
@@ -29,11 +29,13 @@ public class Object : IResolvable
 
     public string? Content { get; set; }
     public ContentMap? ContentMap { get; set; }
+    public Object? Source { get; set; }
 
     [JsonConverter(typeof(ConvertList<IResolvable>))]
     public IList<IResolvable> Context { get; set; } = new List<IResolvable>();
 
-    public ContentMap? Name { get; set; }
+    public string? Name { get; set; }
+    public ContentMap? NameMap { get; set; }
     public DateTime? EndTime { get; set; }
 
     [JsonConverter(typeof(ConvertList<IResolvable>))]
@@ -57,7 +59,8 @@ public class Object : IResolvable
     public DateTime? Published { get; set; }
     public Collection? Replies { get; set; }
     public DateTime? StartTime { get; set; }
-    public ContentMap? Summary { get; set; }
+    public string? Summary { get; set; }
+    public ContentMap? SummaryMap { get; set; }
 
     [JsonConverter(typeof(ConvertList<IResolvable>))]
     public IList<IResolvable> Tag { get; set; } = new List<IResolvable>();
@@ -81,8 +84,6 @@ public class Object : IResolvable
 
     public ContentType? MediaType { get; set; }
     public TimeSpan? Duration { get; set; }
-
-    [JsonIgnore] bool IResolvable.Verified { get; set; } = false;
 
     public void AddContext(LdContext item)
     {

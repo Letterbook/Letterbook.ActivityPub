@@ -1,0 +1,108 @@
+﻿{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    "https://w3id.org/security/v1",
+    {
+      "manuallyApprovesFollowers": "as:manuallyApprovesFollowers",
+      "featured": {
+        "@id": "toot:featured",
+        "@type": "@id"
+      },
+      "toot": "http://joinmastodon.org/ns#",
+      "featuredTags": {
+        "@id": "toot:featuredTags",
+        "@type": "@id"
+      },
+      "alsoKnownAs": {
+        "@id": "as:alsoKnownAs",
+        "@type": "@id"
+      },
+      "movedTo": {
+        "@id": "as:movedTo",
+        "@type": "@id"
+      },
+      "schema": "http://schema.org#",
+      "PropertyValue": "schema:PropertyValue",
+      "value": "schema:value",
+      "discoverable": "toot:discoverable",
+      "Device": "toot:Device",
+      "Ed25519Signature": "toot:Ed25519Signature",
+      "Ed25519Key": "toot:Ed25519Key",
+      "Curve25519Key": "toot:Curve25519Key",
+      "EncryptedMessage": "toot:EncryptedMessage",
+      "publicKeyBase64": "toot:publicKeyBase64",
+      "deviceId": "toot:deviceId",
+      "claim": {
+        "@type": "@id",
+        "@id": "toot:claim"
+      },
+      "fingerprintKey": {
+        "@type": "@id",
+        "@id": "toot:fingerprintKey"
+      },
+      "identityKey": {
+        "@type": "@id",
+        "@id": "toot:identityKey"
+      },
+      "devices": {
+        "@type": "@id",
+        "@id": "toot:devices"
+      },
+      "messageFranking": "toot:messageFranking",
+      "messageType": "toot:messageType",
+      "cipherText": "toot:cipherText",
+      "suspended": "toot:suspended",
+      "focalPoint": {
+        "@container": "@list",
+        "@id": "toot:focalPoint"
+      }
+    }
+  ],
+  "id": "https://mastodon.example/users/test_actor",
+  "type": "Person",
+  "following": "https://mastodon.example/users/test_actor/following",
+  "followers": "https://mastodon.example/users/test_actor/followers",
+  "inbox": "https://mastodon.example/users/test_actor/inbox",
+  "outbox": "https://mastodon.example/users/test_actor/outbox",
+  "featured": "https://mastodon.example/users/test_actor/collections/featured",
+  "featuredTags": "https://mastodon.example/users/test_actor/collections/tags",
+  "preferredUsername": "test_actor",
+  "name": "An actor you can test",
+  "summary": "<p>Not real.</p><p>Still helpful.</p>",
+  "url": "https://mastodon.example/@test_actor",
+  "manuallyApprovesFollowers": false,
+  "discoverable": true,
+  "published": "2022-12-12T00:00:00Z",
+  "devices": "https://mastodon.example/users/test_actor/collections/devices",
+  "publicKey": {
+    "id": "https://mastodon.example/users/test_actor#main-key",
+    "owner": "https://mastodon.example/users/test_actor",
+    "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAo4uzFzVM3y8MCx7ocF59\nEVOTdHrnlxtdcob3giqqLUWT1cXEVoV4lFWiFO2Gystc6m+sVR8Sd5WU+M7OwRoo\nf+E0dAZk1bdIuFf9xsVRm4aJSidl8+u0guNgJrwIxmPCgi/Ji367L0pBR6JVLFeF\nFMX3zoH1a1+44vd5iJkxNyjP3nzY8+xCiOMqheTsxDmIctlDqeu0I4mZOJL8ebyo\nSYR8O/9unoQxepcTlG+CZsPURs9TcUyOX8oJkDlgA84zD4b3tkYa3fTCgJ+ByXqB\nWeJ2UShS4k6aVk0Z17tCqj0qGK9U3c/Dc+pKXdy6Ce2Yl2a1aHxnuTO4YH3CRaN4\nxQIDAQAB\n-----END PUBLIC KEY-----\n"
+  },
+  "tag": [],
+  "attachment": [
+    {
+      "type": "PropertyValue",
+      "name": "blog",
+      "value": "<a href=\"https://test_actor.blogspot.com\" target=\"_blank\" rel=\"nofollow noopener noreferrer me\"><span class=\"invisible\">https://</span><span class=\"\">test_actor.blogspot.com</span><span class=\"invisible\"></span></a>"
+    },
+    {
+      "type": "PropertyValue",
+      "name": "email",
+      "value": "test_actor@example.com"
+    }
+  ],
+  "endpoints": {
+    "sharedInbox": "https://mastodon.example/inbox"
+  },
+  "icon": {
+    "type": "Image",
+    "mediaType": "image/jpeg",
+    "url": "https://cdn.mastodon.example/test_actor/accounts/avatars/109/497/783/827/254/564/original/b0adb5063df194a6.jpg"
+  },
+  "image": {
+    "type": "Image",
+    "mediaType": "image/jpeg",
+    "url": "https://cdn.masto.host/test_actor/accounts/headers/109/497/783/827/254/564/original/b257a4a7bcbed48b.jpeg"
+  }
+}

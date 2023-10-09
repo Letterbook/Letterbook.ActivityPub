@@ -21,17 +21,4 @@ public static class Extensions
         value = default;
         return false;
     }
-    
-    public static Models.Object Verify(this IResolvable self)
-    {
-        self.Verified = true;
-        throw new NotImplementedException();
-    }
-
-    public static bool TryVerify<T>(this IResolvable self, out T value) where T : Models.Object
-    {
-        self.Verified = true;
-        
-        throw new NotImplementedException();
-    }
 }

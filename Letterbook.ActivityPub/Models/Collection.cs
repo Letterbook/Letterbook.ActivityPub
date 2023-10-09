@@ -4,7 +4,7 @@ namespace Letterbook.ActivityPub.Models;
 
 public class Collection : Object
 {
-    public uint TotalItems { get; set; } = 0;
+    public uint? TotalItems { get; set; }
     public CollectionPage? Current { get; set; }
     public CollectionPage? First { get; set; }
     public CollectionPage? Last { get; set; }

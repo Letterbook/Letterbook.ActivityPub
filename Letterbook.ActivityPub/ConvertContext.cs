@@ -65,24 +65,57 @@ public class ConvertContext : JsonConverter<IEnumerable<LdContext>>
         while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
         {
             var context = ReadContextProperty(ref reader);
-            collection.Add(context);
+            if (context != null) collection.Add(context);
         }
     }
 
-    private static LdContext ReadContextProperty(ref Utf8JsonReader reader)
+    private static LdContext? ReadContextProperty(ref Utf8JsonReader reader)
     {
         if (reader.TokenType != JsonTokenType.PropertyName)
             throw new JsonException($"Invalid @context entry at {reader.TokenType}");
+
         var prefix = reader.GetString();
+        if (!reader.Read())
+            throw new JsonException("Unexpected end of Json input");
+        if (reader.TokenType == JsonTokenType.String)
+        {
+            var suffix = reader.GetString();
+            return (suffix != null) ? new LdContext(prefix, suffix) : default;
+        }
+
+        if (reader.TokenType == JsonTokenType.StartObject)
+        {
+            var suffix = ReadContextPropertyObject(ref reader);
+            return suffix != null ? new LdContext(prefix, suffix) : default;
+        }
         
-        if (!reader.Read() || reader.TokenType != JsonTokenType.String)
-            throw new JsonException($"Invalid Json property {reader.TokenType} at {reader.Position}");
-        var suffix = reader.GetString();
-        
-        if (prefix is null || suffix is null)
-            throw new JsonException($"Invalid @context entry at {reader.TokenType}");
-        
-        return new LdContext(prefix, suffix);
+        throw new JsonException($"Invalid Json property {reader.TokenType} at {reader.Position}");
+    }
+
+    private static string? ReadContextPropertyObject(ref Utf8JsonReader reader)
+    {
+        while (reader.Read())
+        {
+            if (reader.TokenType == JsonTokenType.EndObject) return default;
+            if (reader.TokenType != JsonTokenType.PropertyName)
+                throw new JsonException($"Invalid @context entry at {reader.TokenType}");
+            var key = reader.GetString();
+            if (key == "@id")
+            {
+                break;
+            }
+            reader.Skip();
+        }
+
+        if (!reader.Read() || reader.TokenType != JsonTokenType.String) return default;
+        var value = reader.GetString();
+
+        while (reader.Read() && reader.TokenType != JsonTokenType.EndObject)
+        {
+            reader.Skip();
+        }
+        return value;
+
     }
 
     public override void Write(Utf8JsonWriter writer, IEnumerable<LdContext> values, JsonSerializerOptions options)

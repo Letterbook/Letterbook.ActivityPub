@@ -16,8 +16,11 @@ public class ContentMap : Dictionary<string, string>
     public ContentMap() : this(CultureInfo.InvariantCulture.Name)
     {}
 
+    public void Add(string defaultValue) => Add(_defaultCulture, defaultValue);
+    
     public override string ToString()
     {
         return TryGetValue(_defaultCulture, out var value) ? value : this.FirstOrDefault().Value;
     }
+    
 }

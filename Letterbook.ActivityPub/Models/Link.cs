@@ -26,7 +26,6 @@ public class Link : IResolvable
         get => Href;
         set => Href = value!;
     }
-    [JsonIgnore] bool IResolvable.Verified { get; set; } = false;
 
     public Link(string href) : this(new CompactIri(href))
     {

@@ -26,15 +26,18 @@ public static class JsonOptions
                         if (typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType) &&
                             propertyInfo.PropertyType != typeof(string))
                         {
-                            propertyInfo.ShouldSerialize = static (obj, value) =>
-                            {
-                                var v = (value as IEnumerable<object>);
-                                return v?.Any() == true;
-                            };
+                            propertyInfo.ShouldSerialize = 
+                                static (_, value) => value is IEnumerable<object> v && v.Any();
                         }
                     }
                 }),
             }
+        },
+        Converters =
+        {
+            new ConvertMediaType(),
+            // new ConvertList<IResolvable>(), // TODO: make this halt so we don't have to instantiate it 20 times per object
+            new ConvertCollection(),
         }
     };
     private static readonly Lazy<JsonSerializerOptions> Lazy = new(OptionGenerator!);

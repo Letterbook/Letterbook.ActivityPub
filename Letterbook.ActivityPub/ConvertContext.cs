@@ -80,7 +80,7 @@ public class ConvertContext : JsonConverter<IEnumerable<LdContext>>
         if (reader.TokenType == JsonTokenType.String)
         {
             var suffix = reader.GetString();
-            return new LdContext(prefix, suffix);
+            return (suffix != null) ? new LdContext(prefix, suffix) : default;
         }
 
         if (reader.TokenType == JsonTokenType.StartObject)

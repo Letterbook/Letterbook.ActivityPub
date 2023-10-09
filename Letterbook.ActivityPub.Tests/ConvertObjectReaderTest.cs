@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Text.Json;
 using Letterbook.ActivityPub.Models;
 using Object = Letterbook.ActivityPub.Models.Object;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 
 namespace Letterbook.ActivityPub.Tests;
 

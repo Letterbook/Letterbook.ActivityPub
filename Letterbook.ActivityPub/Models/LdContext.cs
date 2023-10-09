@@ -12,7 +12,7 @@ public class LdContext : IEquatable<LdContext>
         Suffix = suffix;
     }
 
-    public LdContext(string prefix, string suffix) : this(suffix)
+    public LdContext(string? prefix, string suffix) : this(suffix)
     {
         Prefix = prefix;
     }

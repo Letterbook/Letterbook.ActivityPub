@@ -11,7 +11,7 @@ public class ConvertCollection : JsonConverter<Collection>
         if (reader.TokenType != JsonTokenType.StartObject)
         {
             var id = reader.GetString();
-            return id != null ? new Collection { Id = id, Type = null } : default;
+            return id != null ? new Collection { Id = id, Type = default! } : default;
         }
 
         var opts = new JsonSerializerOptions(options);

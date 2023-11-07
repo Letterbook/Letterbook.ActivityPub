@@ -34,7 +34,7 @@ public class ConvertResolvable : JsonConverter<IResolvable>
                     {
                         return JsonSerializer.Deserialize<Link>(reader: ref reader, options);
                     }
-                    if (string.Compare(next, "Actor", StringComparison.InvariantCultureIgnoreCase) == 0)
+                    if (Actor.Types.Contains(next, StringComparer.InvariantCultureIgnoreCase))
                     {
                         return JsonSerializer.Deserialize<Actor>(ref reader, options);
                     }
@@ -51,6 +51,10 @@ public class ConvertResolvable : JsonConverter<IResolvable>
                     if (Activity.Types.Contains(next, StringComparer.InvariantCultureIgnoreCase))
                     {
                         return JsonSerializer.Deserialize<Activity>(ref reader, options);
+                    }
+                    if (string.Compare(next, "PropertyValue", StringComparison.InvariantCultureIgnoreCase) == 0)
+                    {
+                        return JsonSerializer.Deserialize<PropertyValue>(ref reader, options);
                     }
                     
                     return JsonSerializer.Deserialize<Object>(ref reader, options);

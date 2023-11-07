@@ -62,6 +62,13 @@ public class ConvertObjectReaderTest
         Assert.Equal("https://mastodon.example/users/test_actor/inbox", actual.Inbox.Id.ToString());
         Assert.Equal("https://mastodon.example/users/test_actor/outbox", actual.Outbox.Id.ToString());
         Assert.NotNull(actual.PublicKey?.PublicKeyPem);
+        Assert.True(actual.Attachment
+            .Aggregate(false, (result, each) => result || (each as PropertyValue)?.Name == "email"),
+            "Name missing");
+        Assert.True(actual.Attachment
+            .Aggregate(false, (result, each) => result || (each as PropertyValue)?.Value == "test_actor@example.com"),
+            "Value missing");
+        // Assert.Contains(actual.Attachment, new PropertyValue() { Name = "email", Value = "test_actor@example.com" });
     }
 
     [Trait("JsonConvert", "Marshall")]

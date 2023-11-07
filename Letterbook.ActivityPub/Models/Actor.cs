@@ -4,6 +4,16 @@ namespace Letterbook.ActivityPub.Models;
 
 public class Actor : Object
 {
+    public static List<string> Types = new(new[]
+    {
+        "Actor",
+        "Application",
+        "Group",
+        "Organization",
+        "Person",
+        "Service",
+    });
+    
     [Required] public Collection Inbox { get; set; } = new Collection { Type = "OrderedCollection" };
     [Required] public Collection Outbox { get; set; } = new Collection { Type = "OrderedCollection" };
     public Collection? Following { get; set; }

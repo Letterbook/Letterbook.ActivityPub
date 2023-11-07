@@ -68,7 +68,6 @@ public class ConvertObjectReaderTest
         Assert.True(actual.Attachment
             .Aggregate(false, (result, each) => result || (each as PropertyValue)?.Value == "test_actor@example.com"),
             "Value missing");
-        // Assert.Contains(actual.Attachment, new PropertyValue() { Name = "email", Value = "test_actor@example.com" });
     }
 
     [Trait("JsonConvert", "Marshall")]

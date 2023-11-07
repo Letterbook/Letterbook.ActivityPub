@@ -10,4 +10,16 @@ public class Actor : Object
     public Collection? Followers { get; set; }
     public Collection? Liked { get; set; }
     public Collection? Streams { get; set; }
+    public ActorEndpoints? Endpoints { get; set; }
+    public PublicKey? PublicKey { get; set; }
+
+    public class ActorEndpoints
+    {
+        public Uri? ProxyUrl { get; set; }
+        public Uri? OauthAuthorizationEndpoint { get; set; }
+        public Uri? OauthTokenEndpoint { get; set; }
+        public Uri? ProvideClientKey { get; set; }
+        public Uri? SignClientKey { get; set; }
+        public Uri? SharedInbox { get; set; }
+    }
 }

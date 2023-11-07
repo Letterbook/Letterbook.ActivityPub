@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using Letterbook.ActivityPub.Models;
@@ -62,6 +61,7 @@ public class ConvertObjectReaderTest
         Assert.Equal("https://mastodon.example/users/test_actor/followers", actual.Followers.Id.ToString());
         Assert.Equal("https://mastodon.example/users/test_actor/inbox", actual.Inbox.Id.ToString());
         Assert.Equal("https://mastodon.example/users/test_actor/outbox", actual.Outbox.Id.ToString());
+        Assert.NotNull(actual.PublicKey?.PublicKeyPem);
     }
 
     [Trait("JsonConvert", "Marshall")]

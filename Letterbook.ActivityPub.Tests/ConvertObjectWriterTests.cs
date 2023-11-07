@@ -59,6 +59,26 @@ public class ConvertObjectWriterTests
         Assert.Matches("https://mastodon.example/schema#", actual);
         Assert.Matches("@context", actual);
     }
+    
+    [Fact]
+    public void SerializeSupportedLdContext()
+    {
+        var opts = JsonOptions.ActivityPub;
+        var testObject = new Models.Object
+        {
+            LdContext = LdContext.SupportedContexts,
+            Content = "test content",
+            Id = new CompactIri("https://letterbook.example/1"),
+            Type = "Note"
+        };
+
+        var actual = JsonSerializer.Serialize(testObject, opts);
+
+        Assert.Matches("https://www.w3.org/ns/activitystreams", actual);
+        Assert.Matches("https://w3id.org/security/v1", actual);
+        Assert.Matches("http://schema.org", actual);
+        Assert.Matches("@context", actual);
+    }
 
     [Fact]
     public void SerializeSingleLdContext()

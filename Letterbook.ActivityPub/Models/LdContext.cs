@@ -3,6 +3,18 @@
 public class LdContext : IEquatable<LdContext>
 {
     public static LdContext ActivityStreams = new LdContext("https://www.w3.org/ns/activitystreams");
+
+    public static IEnumerable<LdContext> SupportedContexts = new List<LdContext>
+    {
+        ActivityStreams,
+        new("https://w3id.org/security/v1"),
+        new("http://schema.org"),
+        new("as", "https://www.w3.org/ns/activitystreams#"),
+        new("sec", "https://w3id.org/security/v1#"),
+        new("publicKey", "sec:publicKey"),
+        new("schema", "http://schema.org#"),
+        new("PropertyValue", "schema:PropertyValue"),
+    };
     
     public string? Prefix { get; set; }
     public string Suffix { get; set; }

@@ -18,6 +18,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, JsonOptions.ActivityPub);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Matches("https://letterbook.example/1", actual);
     }
 
@@ -30,11 +31,11 @@ public class ConvertObjectWriterTests
             Content = "test content",
             Id = new CompactIri("https://letterbook.example/1"),
             Type = "Note",
-            
         };
 
         var actual = JsonSerializer.Serialize(testObject, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.DoesNotMatch("bto", actual);
         Assert.DoesNotMatch("null", actual);
         Assert.Matches("test content", actual);
@@ -55,11 +56,12 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Matches("https://www.w3.org/ns/activitystreams", actual);
         Assert.Matches("https://mastodon.example/schema#", actual);
         Assert.Matches("@context", actual);
     }
-    
+
     [Fact]
     public void SerializeSupportedLdContext()
     {
@@ -74,6 +76,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Matches("https://www.w3.org/ns/activitystreams", actual);
         Assert.Matches("https://w3id.org/security/v1", actual);
         Assert.Matches("http://schema.org", actual);
@@ -94,6 +97,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Matches("\"@context\": ?\"https://www.w3.org/ns/activitystreams\"", actual);
     }
 
@@ -110,6 +114,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.DoesNotMatch("@context", actual);
     }
 
@@ -132,14 +137,17 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testActivity, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.DoesNotMatch("@context", actual);
     }
-    
+
     [Fact]
     public void SerializeLinksAsString_WhenOnlyHRefIsSet()
     {
         var link = new Link("https://example.com/");
         var output = JsonSerializer.Serialize<IResolvable>(link, JsonOptions.ActivityPub);
+        
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(output));
         Assert.Equal("\"https://example.com/\"", output);
     }
 
@@ -150,9 +158,9 @@ public class ConvertObjectWriterTests
         {
             Rel = "me"
         };
-        
+
         var output = JsonSerializer.SerializeToElement<IResolvable>(link, JsonOptions.ActivityPub);
-        
+
         Assert.Equal(JsonValueKind.Object, output.ValueKind);
         Assert.True(output.TryGetProperty("href", out var href));
         Assert.Equal("https://example.com/", href.GetString());
@@ -161,12 +169,37 @@ public class ConvertObjectWriterTests
     }
 
     [Fact]
-    public void SerializeObjectAsString_WhenOnlyIdIsSet()
+    public void SerializeEmptyCollectionAsString()
     {
         var col = new Collection() { Id = "https://example.com/collection/0" };
 
-        var actual = JsonSerializer.Serialize<IResolvable>(col, JsonOptions.ActivityPub);
-        
+        var actual = JsonSerializer.Serialize(col, JsonOptions.ActivityPub);
+
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Equal("\"https://example.com/collection/0\"", actual);
+    }
+
+    [Fact]
+    public void SerializeNestedEmptyCollectionAsString()
+    {
+        var actor = new Actor()
+        {
+            Id = "https://example.com/actor/0",
+            Type = "Person",
+            Inbox = new Collection() { Id = "https://example.com/actor/0/inbox" },
+            Outbox = new Collection() { Id = "https://example.com/actor/0/outbox" },
+            Followers = new Collection() { Id = "https://example.com/actor/0/followers" },
+            Following = new Collection() { Id = "https://example.com/actor/0/following" },
+        };
+
+        var actual = JsonSerializer.Serialize(actor, JsonOptions.ActivityPub);
+        const string expected = @"{""id"":""https://example.com/actor/0""," +
+                                @"""type"":""Person""," +
+                                @"""inbox"":""https://example.com/actor/0/inbox""," +
+                                @"""outbox"":""https://example.com/actor/0/outbox""," +
+                                @"""following"":""https://example.com/actor/0/following""," +
+                                @"""followers"":""https://example.com/actor/0/followers""}";
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
+        Assert.Equal(expected, actual);
     }
 }

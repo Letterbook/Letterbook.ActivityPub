@@ -17,7 +17,8 @@ public class ConvertCollectionTests
         };
         
         var actual = JsonSerializer.Serialize(collection, JsonOptions.ActivityPub);
-        
+
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.NotNull(actual);
     }
 }

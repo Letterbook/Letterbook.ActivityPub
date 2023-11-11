@@ -6,7 +6,8 @@ namespace Letterbook.ActivityPub.Models;
 public class Object : IResolvable
 {
     private IEnumerable<LdContext> _ldContext = new HashSet<LdContext>();
-
+    
+    [JsonPropertyOrder(-10)]
     [JsonPropertyName("@context")]
     [JsonConverter(typeof(ConvertContext))]
     public IEnumerable<LdContext> LdContext
@@ -15,7 +16,9 @@ public class Object : IResolvable
         set => _ldContext = value;
     }
 
+    [JsonPropertyOrder(-6)]
     public CompactIri? Id { get; set; }
+    [JsonPropertyOrder(-5)]
     public string Type { get; set; } = string.Empty;
 
     [JsonConverter(typeof(ConvertList<IResolvable>))]

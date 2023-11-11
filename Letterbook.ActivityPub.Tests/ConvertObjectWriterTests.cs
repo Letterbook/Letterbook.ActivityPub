@@ -16,7 +16,7 @@ public class ConvertObjectWriterTests
             Id = new CompactIri("https://letterbook.example/1")
         };
 
-        var actual = JsonSerializer.Serialize(testObject);
+        var actual = JsonSerializer.Serialize(testObject, JsonOptions.ActivityPub);
 
         Assert.Matches("https://letterbook.example/1", actual);
     }
@@ -158,5 +158,15 @@ public class ConvertObjectWriterTests
         Assert.Equal("https://example.com/", href.GetString());
         Assert.True(output.TryGetProperty("rel", out var rel));
         Assert.Equal("me", rel.GetString());
+    }
+
+    [Fact]
+    public void SerializeObjectAsString_WhenOnlyIdIsSet()
+    {
+        var col = new Collection() { Id = "https://example.com/collection/0" };
+
+        var actual = JsonSerializer.Serialize<IResolvable>(col, JsonOptions.ActivityPub);
+        
+        Assert.Equal("\"https://example.com/collection/0\"", actual);
     }
 }

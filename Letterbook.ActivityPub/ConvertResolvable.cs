@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using Letterbook.ActivityPub.Models;
 using Object = Letterbook.ActivityPub.Models.Object;
@@ -76,7 +77,27 @@ public class ConvertResolvable : JsonConverter<IResolvable>
     public override void Write(Utf8JsonWriter writer, IResolvable value, JsonSerializerOptions options)
     {
         if (value is Object asObject)
+        {
+            // Check if the object has properties worth serializing
+            var props = asObject.GetType().GetProperties()
+                .Where(p =>
+                {
+                    var v = p.GetValue(asObject);
+                    return v switch
+                    {
+                        null => false, // exclude nulls
+                        IEnumerable e => e.GetEnumerator().MoveNext(), // exclude empty enumerables
+                        var other => !string.IsNullOrEmpty(other.ToString()) // exclude objects with no stringification
+                    };
+                })
+                .ToList();
+            if (props.Count == 1 && props.First().Name == "Id")
+            {
+                WriteLink(writer, new Link(asObject.Id!), options);
+                return;
+            }
             JsonSerializer.Serialize(writer, asObject, options);
+        }
         
         else if (value is Link asLink)
             WriteLink(writer, asLink, options);

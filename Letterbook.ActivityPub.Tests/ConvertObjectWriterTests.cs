@@ -18,6 +18,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, JsonOptions.ActivityPub);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Matches("https://letterbook.example/1", actual);
     }
 
@@ -34,6 +35,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.DoesNotMatch("bto", actual);
         Assert.DoesNotMatch("null", actual);
         Assert.Matches("test content", actual);
@@ -54,6 +56,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Matches("https://www.w3.org/ns/activitystreams", actual);
         Assert.Matches("https://mastodon.example/schema#", actual);
         Assert.Matches("@context", actual);
@@ -73,6 +76,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Matches("https://www.w3.org/ns/activitystreams", actual);
         Assert.Matches("https://w3id.org/security/v1", actual);
         Assert.Matches("http://schema.org", actual);
@@ -93,6 +97,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Matches("\"@context\": ?\"https://www.w3.org/ns/activitystreams\"", actual);
     }
 
@@ -109,6 +114,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testObject, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.DoesNotMatch("@context", actual);
     }
 
@@ -131,6 +137,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(testActivity, opts);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.DoesNotMatch("@context", actual);
     }
 
@@ -139,6 +146,8 @@ public class ConvertObjectWriterTests
     {
         var link = new Link("https://example.com/");
         var output = JsonSerializer.Serialize<IResolvable>(link, JsonOptions.ActivityPub);
+        
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(output));
         Assert.Equal("\"https://example.com/\"", output);
     }
 
@@ -166,6 +175,7 @@ public class ConvertObjectWriterTests
 
         var actual = JsonSerializer.Serialize(col, JsonOptions.ActivityPub);
 
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Equal("\"https://example.com/collection/0\"", actual);
     }
 
@@ -189,6 +199,7 @@ public class ConvertObjectWriterTests
                                 @"""outbox"":""https://example.com/actor/0/outbox""," +
                                 @"""following"":""https://example.com/actor/0/following""," +
                                 @"""followers"":""https://example.com/actor/0/followers""}";
+        Assert.NotNull(JsonSerializer.Deserialize<IResolvable>(actual));
         Assert.Equal(expected, actual);
     }
 }

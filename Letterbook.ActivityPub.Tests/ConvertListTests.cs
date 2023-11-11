@@ -15,9 +15,9 @@ public class ConvertListTests
             Type = "Note",
             Attachment = new List<IResolvable>()
             {
-                new Object() {Type = "Image"},
-                new Object() {Type = "Image"},
-                new Object() {Type = "Image"},
+                new Object() {Type = "Image", Url = new List<IResolvable> {new Link("https://example.com/image/0")} },
+                new Object() {Type = "Image", Url = new List<IResolvable> {new Link("https://example.com/image/1")} },
+                new Object() {Type = "Image", Url = new List<IResolvable> {new Link("https://example.com/image/2")} },
             }
         };
 

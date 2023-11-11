@@ -90,10 +90,11 @@ public class ConvertResolvable : JsonConverter<IResolvable>
                         var other => !string.IsNullOrEmpty(other.ToString()) // exclude objects with no stringification
                     };
                 })
+                .Select(p => p.Name)
                 .ToList();
-            if (props.Count == 1 && props.First().Name == "Id")
+            if (props.Union(new[] { "Id", "Type" }).Count() == 2)
             {
-                WriteLink(writer, new Link(asObject.Id!), options);
+                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(asObject.Id, options));
                 return;
             }
             JsonSerializer.Serialize(writer, asObject, options);

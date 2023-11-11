@@ -30,7 +30,6 @@ public class ConvertObjectWriterTests
             Content = "test content",
             Id = new CompactIri("https://letterbook.example/1"),
             Type = "Note",
-            
         };
 
         var actual = JsonSerializer.Serialize(testObject, opts);
@@ -59,7 +58,7 @@ public class ConvertObjectWriterTests
         Assert.Matches("https://mastodon.example/schema#", actual);
         Assert.Matches("@context", actual);
     }
-    
+
     [Fact]
     public void SerializeSupportedLdContext()
     {
@@ -134,7 +133,7 @@ public class ConvertObjectWriterTests
 
         Assert.DoesNotMatch("@context", actual);
     }
-    
+
     [Fact]
     public void SerializeLinksAsString_WhenOnlyHRefIsSet()
     {
@@ -150,9 +149,9 @@ public class ConvertObjectWriterTests
         {
             Rel = "me"
         };
-        
+
         var output = JsonSerializer.SerializeToElement<IResolvable>(link, JsonOptions.ActivityPub);
-        
+
         Assert.Equal(JsonValueKind.Object, output.ValueKind);
         Assert.True(output.TryGetProperty("href", out var href));
         Assert.Equal("https://example.com/", href.GetString());
@@ -161,12 +160,35 @@ public class ConvertObjectWriterTests
     }
 
     [Fact]
-    public void SerializeObjectAsString_WhenOnlyIdIsSet()
+    public void SerializeEmptyCollectionAsString()
     {
         var col = new Collection() { Id = "https://example.com/collection/0" };
 
-        var actual = JsonSerializer.Serialize<IResolvable>(col, JsonOptions.ActivityPub);
-        
+        var actual = JsonSerializer.Serialize(col, JsonOptions.ActivityPub);
+
         Assert.Equal("\"https://example.com/collection/0\"", actual);
+    }
+
+    [Fact]
+    public void SerializeNestedEmptyCollectionAsString()
+    {
+        var actor = new Actor()
+        {
+            Id = "https://example.com/actor/0",
+            Type = "Person",
+            Inbox = new Collection() { Id = "https://example.com/actor/0/inbox" },
+            Outbox = new Collection() { Id = "https://example.com/actor/0/outbox" },
+            Followers = new Collection() { Id = "https://example.com/actor/0/followers" },
+            Following = new Collection() { Id = "https://example.com/actor/0/following" },
+        };
+
+        var actual = JsonSerializer.Serialize(actor, JsonOptions.ActivityPub);
+        const string expected = @"{""id"":""https://example.com/actor/0""," +
+                                @"""type"":""Person""," +
+                                @"""inbox"":""https://example.com/actor/0/inbox""," +
+                                @"""outbox"":""https://example.com/actor/0/outbox""," +
+                                @"""following"":""https://example.com/actor/0/following""," +
+                                @"""followers"":""https://example.com/actor/0/followers""}";
+        Assert.Equal(expected, actual);
     }
 }

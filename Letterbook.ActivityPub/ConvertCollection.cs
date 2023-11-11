@@ -21,8 +21,24 @@ public class ConvertCollection : JsonConverter<Collection>
 
     public override void Write(Utf8JsonWriter writer, Collection value, JsonSerializerOptions options)
     {
+        var props = value.GetType().GetProperties()
+            .Where(p =>
+            {
+                var v = p.GetValue(value);
+                return v switch
+                {
+                    null => false, // exclude nulls
+                    System.Collections.IEnumerable e => e.GetEnumerator().MoveNext(), // exclude empty enumerables
+                    var other => !string.IsNullOrEmpty(other.ToString()) // exclude objects with no stringification
+                };
+            })
+            .Select(p => p.Name)
+            .ToList();
+
         var opts = new JsonSerializerOptions(options);
         opts.Converters.RemoveAt(opts.Converters.IndexOf(this));
-        writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(value, opts));
+        writer.WriteRawValue(props.Union(new[] { "Id", "Type" }).Count() > 2
+            ? JsonSerializer.SerializeToUtf8Bytes(value, opts)
+            : JsonSerializer.SerializeToUtf8Bytes(value.Id, opts));
     }
-}
+}    

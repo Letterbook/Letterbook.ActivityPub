@@ -22,6 +22,7 @@ public class Actor : Object
     public Collection? Streams { get; set; }
     public ActorEndpoints? Endpoints { get; set; }
     public PublicKey? PublicKey { get; set; }
+    public string? PreferredUsername { get; set; }
 
     public class ActorEndpoints
     {
